@@ -63,7 +63,6 @@ export default class SearchAddress extends React.Component {
         )
         let totalRemain = response[0].data.claimable_total > 0 ? response[0].data.total - response[0].data.claimable_total : response[0].data.total
 
-        console.log(response)
         var d = new Date(0)
         d.setUTCSeconds(response[0].data.last_claimed_item_at)
       
@@ -78,6 +77,8 @@ export default class SearchAddress extends React.Component {
               wallet: this.state.value,
               percentajeStudent: this.state.percentajeStudent,
               percentajeSchool: this.state.percentajeSchool,
+              receiveStudent: ( this.state.percentajeStudent * response[0].data.claimable_total) / 100,
+              receiveSchoolar: ( this.state.percentajeSchool * response[0].data.claimable_total) / 100,
               rank: response[1].data.items[0].rank,
               elo: response[1].data.items[0].elo,
               win_total: response[1].data.items[0].win_total,
@@ -85,6 +86,7 @@ export default class SearchAddress extends React.Component {
               draw_total: response[1].data.items[0].draw_total,
             })                      
             localStorage.setItem('Schoolars', JSON.stringify(user))
+            this.props.parentCallback('ejecutado')
         } else {
           let users = JSON.parse(localStorage.getItem('Schoolars') || '[]')
           if(!users.some(user => user.wallet === this.state.value)){            
@@ -97,6 +99,8 @@ export default class SearchAddress extends React.Component {
               wallet: this.state.value,
               percentajeStudent: this.state.percentajeStudent,
               percentajeSchool: this.state.percentajeSchool,
+              receiveStudent: ( this.state.percentajeStudent * response[0].data.claimable_total) / 100,
+              receiveSchoolar: ( this.state.percentajeSchool * response[0].data.claimable_total) / 100,
               rank: response[1].data.items[0].rank,
               elo: response[1].data.items[0].elo,
               win_total: response[1].data.items[0].win_total,
@@ -104,6 +108,7 @@ export default class SearchAddress extends React.Component {
               draw_total: response[1].data.items[0].draw_total,
             })
             localStorage.setItem('Schoolars', JSON.stringify(users))
+            this.props.parentCallback()
           } else {
             alert('No se puede agregar una cuenta ya agregada. Favor agregar otra')
           }
