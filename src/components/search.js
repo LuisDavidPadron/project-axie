@@ -71,6 +71,7 @@ export default class SearchAddress extends React.Component {
             user.push({
               totalParaRetirar: response[0].data.claimable_total,
               totalReunido: response[0].data.total,
+              daily: response[0].data.total,
               promedioSlpDiario: parseInt(totalRemain/differenceInDays(new Date(), d)),
               fechaCobro: this.addDays(this.days, response[0].data.last_claimed_item_at),
               ultimoDiaCobrado: d,
@@ -83,7 +84,7 @@ export default class SearchAddress extends React.Component {
               elo: response[1].data.items[0].elo,
               win_total: response[1].data.items[0].win_total,
               lose_total: response[1].data.items[0].lose_total,
-              draw_total: response[1].data.items[0].draw_total,
+              draw_total: response[1].data.items[0].draw_total
             })                      
             localStorage.setItem('Schoolars', JSON.stringify(user))
             this.props.parentCallback('ejecutado')
@@ -93,6 +94,7 @@ export default class SearchAddress extends React.Component {
             users.push({
               totalParaRetirar: response[0].data.claimable_total,
               totalReunido: response[0].data.total,
+              daily: response[0].data.total,
               promedioSlpDiario: parseInt(totalRemain/differenceInDays(new Date(), d)),
               fechaCobro: this.addDays(this.days, response[0].data.last_claimed_item_at),
               ultimoDiaCobrado: d,

@@ -62,6 +62,7 @@ export default class App extends React.Component {
               promedioSlpDiario : parseInt(totalRemain/differenceInDays(new Date(), d)),
               fechaCobro : this.addDays(this.days, response[0].data.last_claimed_item_at),
               ultimoDiaCobrado : d,
+              daily: response[0].data.total - becado.totalReunido,
               rank : response[1].data.items[0].rank,
               elo : response[1].data.items[0].elo,
               win_total : response[1].data.items[0].win_total,

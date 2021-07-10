@@ -17,7 +17,7 @@ export default class ListSchools extends React.Component {
               minWidth: 650,
             },
           });;
-          console.log(this.props)
+          
           if(this.props.becados){
             return (
               <TableContainer component={Paper}>
@@ -29,6 +29,7 @@ export default class ListSchools extends React.Component {
                       <TableCell align="right">Promedio Slp Diario</TableCell>
                       <TableCell align="right">Fecha de Cobro</TableCell>
                       <TableCell align="right">Ultimo Dia de cobro</TableCell>
+                      <TableCell align="right">Generado Hoy</TableCell>                      
                       <TableCell align="right">Rank</TableCell>
                       <TableCell align="right">Trophies</TableCell>
                       <TableCell align="right">Victorias</TableCell>
@@ -46,6 +47,7 @@ export default class ListSchools extends React.Component {
                         <TableCell align="right">{ row.promedioSlpDiario}</TableCell>
                         <TableCell align="right">{ format(new Date(row.fechaCobro), 'MM/dd/yyyy') }</TableCell> 
                         <TableCell align="right">{ format(new Date(row.ultimoDiaCobrado), 'MM/dd/yyyy') }</TableCell>
+                        <TableCell align="right">{ row.daily }</TableCell>
                         <TableCell align="right">{ row.rank }</TableCell>
                         <TableCell align="right">{ row.elo }</TableCell>
                         <TableCell align="right">{ row.win_total }</TableCell>
