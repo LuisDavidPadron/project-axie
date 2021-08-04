@@ -2,8 +2,9 @@ import React, { Fragment } from 'react';
 import axios from 'axios';
 import SearchAddress from './components/search';
 import ListSchools from './components/list';
-import { differenceInDays } from 'date-fns'
-import { format } from 'date-fns'
+import { differenceInDays,formatDistance } from 'date-fns'
+import { Container } from '@material-ui/core';
+import { es } from 'date-fns/locale'
 
 
 import './App.css';
@@ -22,11 +23,17 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getData()
+    this.setState({
+      becados: JSON.parse(localStorage.getItem('Schoolars'))
+    });
+    // this.getData()
   }
   
   componentWillUnmount() {
-    this.getData()
+    this.setState({
+      becados: JSON.parse(localStorage.getItem('Schoolars'))
+    });
+    // this.getData()
   }
   
   addDays = (days, dayCobradoEpoch) => {
@@ -34,7 +41,8 @@ export default class App extends React.Component {
 
     d.setUTCSeconds(dayCobradoEpoch)
     d.setDate(d.getDate() + days);
-    return d;
+    
+    return formatDistance(d, new Date(), { addSuffix: true, locale: es});
   }
 
   async getData() {
@@ -62,7 +70,7 @@ export default class App extends React.Component {
               promedioSlpDiario : parseInt(totalRemain/differenceInDays(new Date(), d)),
               fechaCobro : this.addDays(this.days, response[0].data.last_claimed_item_at),
               ultimoDiaCobrado : d,
-              daily: response[0].data.total - becado.totalReunido,
+              daily: response[0].data.total !== becado.totalReunido ? response[0].data.total - becado.totalReunido : becado.daily,
               rank : response[1].data.items[0].rank,
               elo : response[1].data.items[0].elo,
               win_total : response[1].data.items[0].win_total,
@@ -92,9 +100,11 @@ export default class App extends React.Component {
   render(){
     return (
       <Fragment>
-        <h1>Schoolars Axie Infinity</h1>
-        <SearchAddress parentCallback={ this.getData.bind(this) } />
-        <ListSchools becados={ this.state.becados } />
+        <Container>
+          <h1>Schoolars Axie Infinity</h1>
+          <SearchAddress parentCallback={ this.getData.bind(this) } />
+          <ListSchools becados={ this.state.becados } />
+        </Container>        
       </Fragment>    
     );
   }

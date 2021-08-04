@@ -1,6 +1,8 @@
 import React from "react";
 import axios from 'axios';
-import { differenceInDays } from 'date-fns'
+import { differenceInDays, formatDistance } from 'date-fns'
+import { es } from 'date-fns/locale'
+import { makeStyles ,Container, TextField, Box, Button } from '@material-ui/core';
 
 export default class SearchAddress extends React.Component {
     constructor(props) {
@@ -11,6 +13,16 @@ export default class SearchAddress extends React.Component {
         percentajeSchool: 100,
         percentajeStudent: 0        
       };
+
+            
+      this.useStyles = makeStyles(theme => ({
+        button: {
+          margin: '1rem 1rem 1rem 1rem'
+        },
+        inputs :{
+          margin: theme.spacing(1)
+        }
+      }));
 
       this.days = 14;
 
@@ -50,7 +62,7 @@ export default class SearchAddress extends React.Component {
 
       d.setUTCSeconds(dayCobradoEpoch)
       d.setDate(d.getDate() + days);
-      return d;
+      return formatDistance(d, new Date(), { addSuffix: true, locale: es});
     }
 
     async handleSubmit(event) {
@@ -121,24 +133,31 @@ export default class SearchAddress extends React.Component {
   
     render() {
       return (
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Ronin address:
-            <input type="text" value={this.state.value} onChange={this.handleChangeValue} />
-          </label>
-          <br></br>
-          <label>
-            Porcentaje Schoolar
-            <input type="number" value={this.state.percentajeSchool} onChange={this.handleChangeSchool} />
-          </label>
-          <br></br>
-          <label>
-            Porcentaje Becado
-            <input type="number" value={this.state.percentajeStudent} onChange={this.handleChangeStudent} />
-          </label> 
-          <br></br>
-          <input type="submit" value="Buscar" />
-        </form>
+        <Container className={this.useStyles.inputs}>
+          <form onSubmit={ this.handleSubmit }>
+            <Box m={2}>
+              <TextField 
+                id="outlined-basic" 
+                value={this.state.value} 
+                onChange={this.handleChangeValue} 
+                label="Ronin address" 
+                InputProps={{ inputProps: { min: 0, max: 100 } }}
+                variant="outlined" />
+              <TextField 
+                type="number" 
+                id="outlined-basic" 
+                value={this.state.percentajeSchool} 
+                onChange={this.handleChangeSchool} 
+                label="Porcentaje Schoolar" 
+                InputProps={{ inputProps: { min: 0, max: 100 } }}
+                variant="outlined" />
+              <TextField  type="number" id="outlined-basic"  max="100" value={this.state.percentajeStudent} onChange={this.handleChangeStudent} label="Porcentaje Becado" variant="outlined" />          
+            </Box>
+            <Box m={2}>
+              <Button className={ this.useStyles.button } type="submit" variant="contained" color="primary">Buscar</Button>          
+            </Box>                  
+          </form>
+        </Container>       
       );
     }
 }
