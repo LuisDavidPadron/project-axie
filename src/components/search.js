@@ -69,57 +69,54 @@ export default class SearchAddress extends React.Component {
         event.preventDefault();
         let response = await Promise.all(
           [
-            await axios.get(`https://lunacia.skymavis.com/game-api/clients/${this.state.value}/items/1`),
-            await axios.get(`https://lunacia.skymavis.com/game-api/leaderboard?client_id=${this.state.value}&offset=0&limit=0`)
+            await axios.get(`https://api.lunaciarover.com/stats/${this.state.value}`)
           ]
         )
-        let totalRemain = response[0].data.claimable_total > 0 ? response[0].data.total - response[0].data.claimable_total : response[0].data.total
+        let totalRemain = response[0].data.in_game_slp
 
         var d = new Date(0)
-        d.setUTCSeconds(response[0].data.last_claimed_item_at)
+        d.setUTCSeconds(response[0].data.last_claim_timestamp)
       
         if(!localStorage.getItem('Schoolars')){
             let user = [];
             user.push({
-              totalParaRetirar: response[0].data.claimable_total,
-              totalReunido: response[0].data.total,
-              daily: response[0].data.total,
-              promedioSlpDiario: parseInt(totalRemain/differenceInDays(new Date(), d)),
-              fechaCobro: this.addDays(this.days, response[0].data.last_claimed_item_at),
-              ultimoDiaCobrado: d,
-              wallet: this.state.value,
+              totalParaRetirar : response[0].data.ronin_slp,
+              totalReunido : response[0].data.total_slp,
+              promedioSlpDiario : parseInt(totalRemain/differenceInDays(new Date(), d)),
+              fechaCobro : this.addDays(this.days, response[0].data.last_claim_timestamp),
+              ultimoDiaCobrado : d,
+              daily: response[0].data.in_game_slp,//response[0].data.total !== becado.totalReunido ? response[0].data.total - becado.totalReunido : becado.daily,
+              rank : response[0].data.rank,
+              elo : response[0].data.mmr,
+              name: response[0].data.ign,
+              wallet: response[0].data.ronin_address,
               percentajeStudent: this.state.percentajeStudent,
               percentajeSchool: this.state.percentajeSchool,
-              receiveStudent: ( this.state.percentajeStudent * response[0].data.claimable_total) / 100,
-              receiveSchoolar: ( this.state.percentajeSchool * response[0].data.claimable_total) / 100,
-              rank: response[1].data.items[0].rank,
-              elo: response[1].data.items[0].elo,
-              win_total: response[1].data.items[0].win_total,
-              lose_total: response[1].data.items[0].lose_total,
-              draw_total: response[1].data.items[0].draw_total
+              receiveStudent: ( this.state.percentajeStudent * response[0].data.total_slp) / 100,
+              receiveSchoolar: ( this.state.percentajeSchool * response[0].data.total_slp) / 100
             })                      
             localStorage.setItem('Schoolars', JSON.stringify(user))
             this.props.parentCallback('ejecutado')
         } else {
           let users = JSON.parse(localStorage.getItem('Schoolars') || '[]')
+          console.log(users, this.state.value)
           if(!users.some(user => user.wallet === this.state.value)){            
             users.push({
-              totalParaRetirar: response[0].data.claimable_total,
-              totalReunido: response[0].data.total,
-              daily: response[0].data.total,
-              promedioSlpDiario: parseInt(totalRemain/differenceInDays(new Date(), d)),
-              fechaCobro: this.addDays(this.days, response[0].data.last_claimed_item_at),
-              ultimoDiaCobrado: d,
-              wallet: this.state.value,
+             
+              totalParaRetirar : response[0].data.ronin_slp,
+              totalReunido : response[0].data.total_slp,
+              promedioSlpDiario : parseInt(totalRemain/differenceInDays(new Date(), d)),
+              fechaCobro : this.addDays(this.days, response[0].data.last_claim_timestamp),
+              ultimoDiaCobrado : d,
+              daily: response[0].data.in_game_slp,//response[0].data.total !== becado.totalReunido ? response[0].data.total - becado.totalReunido : becado.daily,
+              rank : response[0].data.rank,
+              elo : response[0].data.mmr,
+              name: response[0].data.ign,
+              wallet: response[0].data.ronin_address,
               percentajeStudent: this.state.percentajeStudent,
               percentajeSchool: this.state.percentajeSchool,
-              receiveStudent: ( this.state.percentajeStudent * response[0].data.claimable_total) / 100,
-              receiveSchoolar: ( this.state.percentajeSchool * response[0].data.claimable_total) / 100,
-              rank: response[1].data.items[0].rank,
-              elo: response[1].data.items[0].elo,
-              win_total: response[1].data.items[0].win_total,
-              lose_total: response[1].data.items[0].lose_total,
-              draw_total: response[1].data.items[0].draw_total,
+              receiveStudent: ( this.state.percentajeStudent * response[0].data.total_slp) / 100,
+              receiveSchoolar: ( this.state.percentajeSchool * response[0].data.total_slp) / 100
             })
             localStorage.setItem('Schoolars', JSON.stringify(users))
             this.props.parentCallback()
