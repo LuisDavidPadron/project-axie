@@ -2,6 +2,7 @@ import React from "react";
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 
+import SimplePopover from './poppover';
 
 import TableRow from '@material-ui/core/TableRow';
 
@@ -98,7 +99,8 @@ export default class ListSchools extends React.Component {
       console.log('hola')
       return (        
         <TableBody>
-          <TableRow key={this.props.becado.wallet}>        
+          <TableRow key={this.props.becado.wallet}>  
+            <TableCell><SimplePopover wallet={this.props.becado.wallet}/></TableCell>            
             <TableCell>{ this.props.becado.name}</TableCell>
             <TableCell align="right">{ this.props.becado.totalReunido }</TableCell>
             <TableCell align="right">{ this.props.becado.totalParaRetirar}</TableCell>                                    
@@ -107,9 +109,6 @@ export default class ListSchools extends React.Component {
             <TableCell align="right">{ format(new Date(this.props.becado.ultimoDiaCobrado), 'MM/dd/yyyy') }</TableCell>
             <TableCell align="right">{ this.props.becado.rank }</TableCell>
             <TableCell align="right">{ this.props.becado.elo }</TableCell>
-            {/* <TableCell align="right">{ this.props.becado.win_total }</TableCell>
-            <TableCell align="right">{ this.props.becado.lose_total }</TableCell>
-            <TableCell align="right">{ this.props.becado.draw_total }</TableCell> */}
             <TableCell align="right">{ this.props.becado.receiveSchoolar }</TableCell>                  
             <TableCell align="right">{ this.props.becado.receiveStudent }</TableCell>
           </TableRow>

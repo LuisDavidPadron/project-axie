@@ -139,16 +139,17 @@ export default class App extends React.Component {
           <TableContainer>
             <Table className={this.state.classes.table} aria-label="caption table">
               <TableHead>
-                  <TableCell>Nombre</TableCell>
-                  <TableCell>Total Reunido</TableCell>
-                  <TableCell>Total Retirar</TableCell>
-                  <TableCell>Promedio</TableCell>                  
-                  <TableCell>Next claim</TableCell>
-                  <TableCell>Last claim</TableCell>
-                  <TableCell>Rank</TableCell>
-                  <TableCell>Trophies</TableCell>                  
-                  <TableCell>Retiro Schoolar</TableCell>
-                  <TableCell>Retiro Becado</TableCell>                
+                <TableCell>Axies</TableCell>
+                <TableCell>Nombre</TableCell>
+                <TableCell>Total Reunido</TableCell>
+                <TableCell>Total Retirar</TableCell>
+                <TableCell>Promedio</TableCell>                  
+                <TableCell>Next claim</TableCell>
+                <TableCell>Last claim</TableCell>
+                <TableCell>Rank</TableCell>
+                <TableCell>Trophies</TableCell>                  
+                <TableCell>Retiro Schoolar</TableCell>
+                <TableCell>Retiro Becado</TableCell>                
               </TableHead>
               { this.state.becados.map( (row) => (<ListSchools becado={ row } />) )}          
             </Table>
